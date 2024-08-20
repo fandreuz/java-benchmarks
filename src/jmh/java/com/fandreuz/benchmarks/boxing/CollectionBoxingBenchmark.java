@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.eclipse.collections.api.factory.primitive.ObjectIntMaps;
+import org.eclipse.collections.api.map.primitive.MutableObjectIntMap;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
@@ -23,6 +25,12 @@ public class CollectionBoxingBenchmark {
                         (integer, integer2) -> integer, //
                         HashMap::new) //
                 );
+
+        public MutableObjectIntMap<String> primitiveMap = ObjectIntMaps.mutable.empty();
+
+        public BenchmarkState() {
+            Utils.STRINGS.forEach(s -> primitiveMap.put(s, s.hashCode()));
+        }
     }
 
     @Benchmark
@@ -30,6 +38,13 @@ public class CollectionBoxingBenchmark {
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public int testStandardHashMap(BenchmarkState state) {
         return state.map.get(Utils.STRINGS.get(state.getIndexAndIncrement()));
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.Throughput)
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    public int testPrimitiveMap(BenchmarkState state) {
+        return state.primitiveMap.get(Utils.STRINGS.get(state.getIndexAndIncrement()));
     }
 
 }
