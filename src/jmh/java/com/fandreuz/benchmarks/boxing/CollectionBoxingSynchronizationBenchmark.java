@@ -37,7 +37,7 @@ public class CollectionBoxingSynchronizationBenchmark {
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    public int testStandardHashMap(BenchmarkState state) {
+    public int testConcurrentHashMap(BenchmarkState state) {
         return state.map.get(Utils.STRINGS.get(state.getIndexAndIncrement()));
     }
 
