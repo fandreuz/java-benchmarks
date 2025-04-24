@@ -13,9 +13,6 @@ dependencies {
     annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
     implementation("org.apache.commons:commons-lang3:3.15.0")
     implementation("org.eclipse.collections:eclipse-collections:11.1.0")
-
-    testImplementation(libs.junit.jupiter)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 java {
@@ -34,5 +31,12 @@ spotless {
         removeUnusedImports()
         cleanthat()
         formatAnnotations()
+    }
+}
+
+jmh {
+    val includePattern: String? by project
+    includePattern?.let {
+        includes.add(it)
     }
 }
